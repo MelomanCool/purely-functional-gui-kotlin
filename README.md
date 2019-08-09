@@ -4,7 +4,7 @@ Inspired by The Elm Archirecture / Model-View-Update (MVU) / Redux / Unidirectio
 
 ## How does it look?
 
-<img src="counter.png" align="right" width="50"/>
+<img src="counter.png" align="right" width="100"/>
 
 ```kotlin
 typealias Model = Int
