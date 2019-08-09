@@ -37,10 +37,10 @@ fun main() {
 }
 ```
 
-Model is immutable.
+Model is immutable. This is the state of the application.
 
-View and update are pure functions.
+View and Update are pure functions.
 
-View returns the view represented as a data structure.
+View returns a data structure which represents the GUI.
 
-Update updates the state when something happens (for example, a button was pressed).
+Update replaces the state when something happens (for example, a button was pressed).
