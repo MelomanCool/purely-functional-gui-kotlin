@@ -18,6 +18,7 @@ project.ext {
     }
 
     imguiVersion = '4d50561e42'
+    mainClass = "melomancool.fungui.counter.CounterKt"
 }
 
 
@@ -60,13 +61,13 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'melomancool.fungui.MainKt'
+        attributes 'Main-Class': mainClass
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 apply plugin:'application'
-mainClassName = "melomancool.fungui.MainKt"
+mainClassName = mainClass
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {

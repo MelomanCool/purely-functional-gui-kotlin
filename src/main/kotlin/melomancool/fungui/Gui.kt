@@ -1,27 +1,29 @@
 package melomancool.fungui
 
-import glm_.vec4.Vec4
 import glm_.vec2.Vec2
+import glm_.vec4.Vec4
+
 import gln.checkError
 import gln.glClearColor
 import gln.glViewport
 
+import imgui.ConfigFlag
+import imgui.FontConfig
+import imgui.ImGui
+import imgui.NUL
+import imgui.WindowFlag as Wf
 import imgui.imgui.Context
 import imgui.impl.ImplGL3
 import imgui.impl.ImplGlfw
 import imgui.impl.glslVersion
-import imgui.ImGui
-import imgui.FontConfig
-import imgui.ConfigFlag
-import imgui.WindowFlag as Wf
 
+import org.lwjgl.glfw.GLFW.glfwPollEvents
+import org.lwjgl.glfw.GLFW.glfwSwapBuffers
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT
 import org.lwjgl.opengl.GL11.glClear
 import org.lwjgl.system.Configuration
 import org.lwjgl.system.Platform
-import org.lwjgl.glfw.GLFW.glfwPollEvents
-import org.lwjgl.glfw.GLFW.glfwSwapBuffers
 
 import uno.glfw.GlfwWindow
 import uno.glfw.VSync
@@ -33,7 +35,7 @@ val imguiWindowTitle = "MainWindow"
 
 val glfwWindowTitle = "Purely Functional GUI"
 
-val imguiWindowFlags = Wf.NoTitleBar.i or Wf.NoCollapse.i or Wf.NoMove.i or Wf.NoResize.i or Wf.NoSavedSettings.i or Wf.NoBackground.i
+val imguiWindowFlags = Wf.NoTitleBar.i or Wf.NoCollapse.i or Wf.NoMove.i or Wf.NoResize.i or Wf.NoSavedSettings.i or Wf.NoBackground.i or Wf.AlwaysAutoResize.i
 
 val DEBUG = true
 
@@ -148,20 +150,13 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
     glfw.terminate()
 }
 
-data class GuiDelta<T>(val isChanged: Boolean, val value: T)
-
-fun checkbox(label: String, isChecked: Boolean): GuiDelta<Boolean> {
-    val box = booleanArrayOf(isChecked)
-    val isChanged = ImGui.checkbox(label, box)
-    return GuiDelta(isChanged, box[0])
-}
-
 sealed class View<out T>
 data class Button<T>(val text: String, val onClick: T? = null): View<T>()
-data class Label<T>(val text: String): View<T>()
+data class Label(val text: String): View<Nothing>()
 data class VerticalLayout<T>(val children: List<View<T>>): View<T>() {
     constructor(vararg children: View<T>) : this(children.toList())
 }
+data class TextField<T>(val label: String, val text: String, val onInput: ((String) -> T)? = null): View<T>()
 
 fun <Mdl, Ms> runOnce(model: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> Mdl): Mdl {
     val v = view(model)
@@ -179,6 +174,7 @@ fun <T> renderGeneric(v: View<T>): T? {
         is VerticalLayout -> render(v)
         is Button -> render(v)
         is Label -> render(v)
+        is TextField -> render(v)
     }
 }
 
@@ -194,37 +190,16 @@ fun <T> render(b: Button<T>): T? {
     }
 }
 
-fun <T> render(l: Label<T>): T? {
+fun <T> render(l: Label): T? {
     ImGui.text(l.text)
     return null
 }
 
-
-typealias Model = Int
-
-sealed class Msg
-object Increment : Msg()
-object Decrement : Msg()
-
-fun view(model: Model): View<Msg> =
-    VerticalLayout(
-        Button("-", onClick = Decrement),
-        Label(model.toString()),
-        Button("+", onClick = Increment)
-    )
-
-fun update(msg: Msg, model: Model): Model =
-    when (msg) {
-        is Increment ->
-            model + 1
-        is Decrement ->
-            model - 1
+fun <T> render(tf: TextField<T>): T? {
+    val inputBuf = tf.text.toCharArray(CharArray(64))
+    if (ImGui.inputText(tf.label, inputBuf) and (tf.onInput != null)) {
+        return tf.onInput!!(inputBuf.takeWhile { it != NUL }.joinToString(""))
+    } else {
+        return null
     }
-
-fun main() {
-    run(
-        initialModel = 0,
-        view = ::view,
-        update = ::update
-    )
 }
