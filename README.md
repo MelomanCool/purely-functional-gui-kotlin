@@ -1,6 +1,11 @@
 # Purely Functional GUI Prototype in Kotlin
 
+For desktop.
+
 Inspired by The Elm Archirecture / Model-View-Update (MVU) / Redux / Unidirectional Data Flow.
+
+Built on top of [ImGui for Kotlin](https://github.com/kotlin-graphics/imgui/) and OpenGL.
+
 
 ## What does it look like?
 
