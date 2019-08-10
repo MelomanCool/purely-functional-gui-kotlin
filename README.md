@@ -2,7 +2,7 @@
 
 Inspired by The Elm Archirecture / Model-View-Update (MVU) / Redux / Unidirectional Data Flow.
 
-## How does it look?
+## What does it look like?
 
 <img src="counter.png" align="right" width="100"/>
 
@@ -43,4 +43,4 @@ View and Update are pure functions.
 
 View returns a data structure which represents the GUI.
 
-Update replaces the state when something happens (for example, a button was pressed).
+Update replaces the state when something happens (for example, when a button was pressed).
