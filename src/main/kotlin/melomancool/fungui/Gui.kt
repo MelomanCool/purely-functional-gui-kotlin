@@ -189,7 +189,7 @@ fun <T> render(vl: HorizontalLayout<T>): T? {
             .dropLast(1)
             .mapIndexed { i, it ->
                 ImGui.pushId(i)
-                var r = renderGeneric(it)
+                val r = renderGeneric(it)
                 ImGui.popId()
                 ImGui.sameLine()
                 r
