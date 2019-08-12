@@ -12,6 +12,7 @@ import imgui.FontConfig
 import imgui.ImGui
 import imgui.NUL
 import imgui.WindowFlag as Wf
+import imgui.dsl
 import imgui.imgui.Context
 import imgui.impl.ImplGL3
 import imgui.impl.ImplGlfw
@@ -106,10 +107,10 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
             implGl3.newFrame()
             implGlfw.newFrame()
             ImGui.newFrame()
-            ImGui.begin(imguiWindowTitle, flags_ = imguiWindowFlags)
-            model = runOnce(model, view, update)
-            windowSize = glm_.vec2.Vec2i(ImGui.windowSize)
-            ImGui.end()
+            dsl.window(imguiWindowTitle, flags = imguiWindowFlags) {
+                model = runOnce(model, view, update)
+                windowSize = glm_.vec2.Vec2i(ImGui.windowSize)
+            }
         }
         window.size = windowSize
     }
@@ -124,10 +125,10 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
         ImGui.setNextWindowPos(Vec2(0, 0))
         ImGui.setNextWindowSize(Vec2(window.size))
 
-        ImGui.begin(imguiWindowTitle, flags_ = imguiWindowFlags)
-        model = runOnce(model, view, update)
-        window.size = glm_.vec2.Vec2i(ImGui.windowSize)
-        ImGui.end()
+        dsl.window(imguiWindowTitle, flags = imguiWindowFlags) {
+            model = runOnce(model, view, update)
+            window.size = glm_.vec2.Vec2i(ImGui.windowSize)
+        }
 
         ImGui.render()
         glViewport(window.framebufferSize)
