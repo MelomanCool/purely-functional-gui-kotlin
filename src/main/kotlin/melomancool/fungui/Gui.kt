@@ -187,8 +187,10 @@ fun <T> render(vl: HorizontalLayout<T>): T? {
     return if (last != null) {
         vl.children
             .dropLast(1)
-            .map {
+            .mapIndexed { i, it ->
+                ImGui.pushId(i)
                 var r = renderGeneric(it)
+                ImGui.popId()
                 ImGui.sameLine()
                 r
             }
@@ -201,8 +203,11 @@ fun <T> render(vl: HorizontalLayout<T>): T? {
 
 fun <T> render(vl: VerticalLayout<T>): T? {
     return vl.children
-        .map {
-            renderGeneric(it)
+        .mapIndexed { i, it ->
+            ImGui.pushId(i)
+            val res = renderGeneric(it)
+            ImGui.popId()
+            res
         }
         .firstOrNull{ it != null }
 }
