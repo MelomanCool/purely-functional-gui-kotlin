@@ -1,6 +1,7 @@
 package melomancool.fungui.todomvc
 
 import melomancool.fungui.Button
+import melomancool.fungui.HorizontalLayout
 import melomancool.fungui.Label
 import melomancool.fungui.TextField
 import melomancool.fungui.VerticalLayout
@@ -19,8 +20,10 @@ object AddNewTodo: Msg()
 fun view(model: Model): View<Msg> =
     VerticalLayout(
         *model.todos.map { Label(it.text) }.toTypedArray(),
-        TextField(label = "", text = model.newTodoText, onInput = ::SetNewTodoText),
-        Button(text = "Add Todo", onClick = AddNewTodo)
+        HorizontalLayout(
+            TextField(label = "", text = model.newTodoText, onInput = ::SetNewTodoText),
+            Button(text = "Add Todo", onClick = AddNewTodo)
+        )
     )
 
 fun update(msg: Msg, model: Model): Model =
