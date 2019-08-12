@@ -156,6 +156,9 @@ data class Label(val text: String): View<Nothing>()
 data class VerticalLayout<T>(val children: List<View<T>>): View<T>() {
     constructor(vararg children: View<T>) : this(children.toList())
 }
+data class HorizontalLayout<T>(val children: List<View<T>>): View<T>() {
+    constructor(vararg children: View<T>) : this(children.toList())
+}
 data class TextField<T>(val label: String, val text: String, val onInput: ((String) -> T)? = null): View<T>()
 
 fun <Mdl, Ms> runOnce(model: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> Mdl): Mdl {
@@ -171,10 +174,28 @@ fun <Mdl, Ms> runOnce(model: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> 
 // A hack to emulate generic overloading
 fun <T> renderGeneric(v: View<T>): T? {
     return when (v) {
+        is HorizontalLayout -> render(v)
         is VerticalLayout -> render(v)
         is Button -> render(v)
         is Label -> render(v)
         is TextField -> render(v)
+    }
+}
+
+fun <T> render(vl: HorizontalLayout<T>): T? {
+    val last = vl.children.lastOrNull()
+    return if (last != null) {
+        vl.children
+            .dropLast(1)
+            .map {
+                var r = renderGeneric(it)
+                ImGui.sameLine()
+                r
+            }
+            .plusElement(renderGeneric(last))
+            .firstOrNull{ it != null }
+    } else {
+        null
     }
 }
 
