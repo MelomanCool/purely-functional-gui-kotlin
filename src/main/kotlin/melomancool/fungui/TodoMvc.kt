@@ -1,7 +1,5 @@
 package melomancool.fungui.todomvc
 
-import arrow.optics.optics
-
 import melomancool.fungui.Button
 import melomancool.fungui.Label
 import melomancool.fungui.TextField
@@ -10,15 +8,9 @@ import melomancool.fungui.View
 
 import melomancool.fungui.run
 
-@optics
-data class Todo(val text: String) {
-    companion object
-}
+data class Todo(val text: String)
 
-@optics
-data class Model(val newTodoText: String, val todos: List<Todo>) {
-    companion object
-}
+data class Model(val newTodoText: String, val todos: List<Todo>)
 
 sealed class Msg
 data class SetNewTodoText(val text: String): Msg()

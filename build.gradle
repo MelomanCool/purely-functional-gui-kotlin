@@ -18,7 +18,6 @@ project.ext {
     }
 
     imguiVersion = '4d50561e42'
-    arrowVersion = "0.9.0"
 
     mainClass = "melomancool.fungui.todomvc.TodoMvcKt"
 }
@@ -40,8 +39,6 @@ apply plugin: 'kotlin'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-apply plugin: 'kotlin-kapt'
-
 repositories {
     mavenCentral()
     jcenter()
@@ -51,9 +48,6 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
-    implementation "io.arrow-kt:arrow-optics:$arrowVersion"
-    kapt           "io.arrow-kt:arrow-meta:$arrowVersion"
 
     implementation "com.github.kotlin-graphics.imgui:imgui-core:$imguiVersion"
     implementation "com.github.kotlin-graphics.imgui:imgui-gl:$imguiVersion"
