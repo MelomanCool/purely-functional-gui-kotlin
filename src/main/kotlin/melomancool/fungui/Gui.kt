@@ -200,7 +200,7 @@ fun <T> render(vl: HorizontalLayout<T>): T? {
 }
 
 fun <T> render(vl: VerticalLayout<T>): T? {
-    return vl.children.map { renderGeneric(it) }.asSequence().firstOrNull{ it != null }
+    return vl.children.map { renderGeneric(it) }.firstOrNull{ it != null }
 }
 
 fun <T> render(b: Button<T>): T? {
