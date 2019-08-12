@@ -38,7 +38,7 @@ fun update(msg: Msg, model: Model): Model =
             model.copy(newTodoText = msg.text)
         is AddNewTodo ->
             if (model.newTodoText.isNotBlank()) {
-                model.copy(
+                Model(
                     newTodoText = "",
                     todos = model.todos + Todo(model.newTodoText)
                 )
