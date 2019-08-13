@@ -221,7 +221,7 @@ fun <T> render(b: Button<T>): T? {
     }
 }
 
-fun <T> render(l: Label): T? {
+fun render(l: Label): AlwaysNull {
     ImGui.text(l.text)
     return null
 }
