@@ -22,3 +22,9 @@ data class TextField<Mes>(
     val text: String,
     val onInput: ((String) -> Mes)? = null
 ): View<Mes>()
+
+data class Checkbox<Mes>(
+    val label: String,
+    val isChecked: Boolean,
+    val onClick: ((Boolean) -> Mes)? = null
+): View<Mes>()

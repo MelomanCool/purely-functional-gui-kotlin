@@ -169,6 +169,7 @@ fun <Mes> renderGeneric(v: View<Mes>): Mes? {
         is Button -> render(v)
         is Label -> render(v)
         is TextField -> render(v)
+        is Checkbox -> render(v)
     }
 }
 
@@ -219,6 +220,15 @@ fun <Mes> render(tf: TextField<Mes>): Mes? {
     val inputBuf = tf.text.toCharArray(CharArray(64))
     if (ImGui.inputText(tf.label, inputBuf) and (tf.onInput != null)) {
         return tf.onInput!!(inputBuf.takeWhile { it != NUL }.joinToString(""))
+    } else {
+        return null
+    }
+}
+
+fun <Mes> render(cb: Checkbox<Mes>): Mes? {
+    val inputBuf = booleanArrayOf(cb.isChecked)
+    if (ImGui.checkbox(cb.label, inputBuf) and (cb.onClick != null)) {
+        return cb.onClick!!(inputBuf[0])
     } else {
         return null
     }
