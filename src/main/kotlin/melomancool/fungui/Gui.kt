@@ -155,6 +155,9 @@ fun <Mdl, Mes> runOnce(model: Mdl, view: (Mdl) -> View<Mes>, update: (Mes, Mdl) 
     val v = view(model)
     val msg = renderGeneric(v)
     if (msg != null) {
+        if (DEBUG) {
+            println(msg)
+        }
         return update(msg, model)
     } else {
         return model
