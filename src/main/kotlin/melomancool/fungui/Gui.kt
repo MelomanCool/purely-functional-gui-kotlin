@@ -40,6 +40,8 @@ val imguiWindowFlags = Wf.NoTitleBar.i or Wf.NoCollapse.i or Wf.NoMove.i or Wf.N
 
 val DEBUG = true
 
+val guiScale = 1.5f
+
 fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> Mdl) {
     glfw {
         errorCallback = { error, description -> println("Glfw Error $error: $description") }
@@ -85,10 +87,10 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
     val implGlfw = ImplGlfw(window, true)
     val implGl3 = ImplGL3()
 
-    ImGui.style.scaleAllSizes(2.0f)
+    ImGui.style.scaleAllSizes(guiScale)
 
     // Load Fonts
-    ImGui.io.fonts.addFontFromFileTTF("extraFonts/DroidSans.ttf", 24.0f)
+    ImGui.io.fonts.addFontFromFileTTF("extraFonts/DroidSans.ttf", 18.0f * guiScale)
 
     var model = initialModel
     
