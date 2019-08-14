@@ -221,7 +221,7 @@ fun <Mes> render(b: Button<Mes>): Mes? {
     }
 }
 
-fun render(l: Label): AlwaysNull {
+fun render(l: Label): Nothing? {
     ImGui.text(l.text)
     return null
 }
