@@ -88,12 +88,7 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
     ImGui.style.scaleAllSizes(2.0f)
 
     // Load Fonts
-    FontConfig().let {
-        it.oversample.put(1, 1)
-        it.pixelSnapH = true
-        it.sizePixels = 26f
-        ImGui.io.fonts.addFontDefault(it)
-    }
+    ImGui.io.fonts.addFontFromFileTTF("extraFonts/DroidSans.ttf", 24.0f)
 
     var model = initialModel
     
