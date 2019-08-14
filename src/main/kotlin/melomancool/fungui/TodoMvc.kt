@@ -1,5 +1,8 @@
 package melomancool.fungui.todomvc
 
+import org.pcollections.PVector
+import org.pcollections.TreePVector
+
 import melomancool.fungui.Button
 import melomancool.fungui.Checkbox
 import melomancool.fungui.HorizontalLayout
@@ -12,7 +15,7 @@ import melomancool.fungui.run
 
 data class Todo(val text: String, val isDone: Boolean)
 
-data class Model(val newTodoText: String, val todos: List<Todo>)
+data class Model(val newTodoText: String, val todos: PVector<Todo>)
 
 sealed class Msg
 data class SetNewTodoText(val text: String): Msg()
@@ -46,26 +49,23 @@ fun update(msg: Msg, model: Model): Model =
             if (model.newTodoText.isNotBlank()) {
                 Model(
                     newTodoText = "",
-                    todos = model.todos + Todo(text = model.newTodoText, isDone = false)
+                    todos = model.todos.plus(Todo(text = model.newTodoText, isDone = false))
                 )
             } else {
                 model
             }
         is DeleteTodo ->
-            model.copy(todos = model.todos.filterIndexed{ i, _ -> i != msg.id })
+            model.copy(todos = model.todos.minus(msg.id))
         is SetTodoStatus ->
-            model.copy(todos = model.todos.mapIndexed{ i, td ->
-                if (i == msg.id) {
-                    td.copy(isDone = msg.isDone)
-                } else {
-                    td
-                }
-            })
+            model.copy(todos = model.todos.with(
+                msg.id,
+                model.todos[msg.id].copy(isDone = msg.isDone)
+            ))
     }
 
 fun main() {
     run(
-        initialModel = Model(newTodoText = "", todos = emptyList()),
+        initialModel = Model(newTodoText = "", todos = TreePVector.empty()),
         view = ::view,
         update = ::update
     )
