@@ -151,18 +151,18 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
     glfw.terminate()
 }
 
-sealed class View<out T>
-data class Button<T>(val text: String, val onClick: T? = null): View<T>()
+sealed class View<out Mes>
+data class Button<Mes>(val text: String, val onClick: Mes? = null): View<Mes>()
 data class Label(val text: String): View<Nothing>()
-data class VerticalLayout<T>(val children: List<View<T>>): View<T>() {
-    constructor(vararg children: View<T>) : this(children.toList())
+data class VerticalLayout<Mes>(val children: List<View<Mes>>): View<Mes>() {
+    constructor(vararg children: View<Mes>) : this(children.toList())
 }
-data class HorizontalLayout<T>(val children: List<View<T>>): View<T>() {
-    constructor(vararg children: View<T>) : this(children.toList())
+data class HorizontalLayout<Mes>(val children: List<View<Mes>>): View<Mes>() {
+    constructor(vararg children: View<Mes>) : this(children.toList())
 }
-data class TextField<T>(val label: String, val text: String, val onInput: ((String) -> T)? = null): View<T>()
+data class TextField<Mes>(val label: String, val text: String, val onInput: ((String) -> Mes)? = null): View<Mes>()
 
-fun <Mdl, Ms> runOnce(model: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> Mdl): Mdl {
+fun <Mdl, Mes> runOnce(model: Mdl, view: (Mdl) -> View<Mes>, update: (Mes, Mdl) -> Mdl): Mdl {
     val v = view(model)
     val msg = renderGeneric(v)
     if (msg != null) {
@@ -173,7 +173,7 @@ fun <Mdl, Ms> runOnce(model: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> 
 }
 
 // A hack to emulate generic overloading
-fun <T> renderGeneric(v: View<T>): T? {
+fun <Mes> renderGeneric(v: View<Mes>): Mes? {
     return when (v) {
         is HorizontalLayout -> render(v)
         is VerticalLayout -> render(v)
@@ -183,7 +183,7 @@ fun <T> renderGeneric(v: View<T>): T? {
     }
 }
 
-fun <T> render(vl: HorizontalLayout<T>): T? {
+fun <Mes> render(vl: HorizontalLayout<Mes>): Mes? {
     val last = vl.children.lastOrNull()
     return if (last != null) {
         vl.children
@@ -202,7 +202,7 @@ fun <T> render(vl: HorizontalLayout<T>): T? {
     }
 }
 
-fun <T> render(vl: VerticalLayout<T>): T? {
+fun <Mes> render(vl: VerticalLayout<Mes>): Mes? {
     return vl.children
         .mapIndexed { i, it ->
             ImGui.pushId(i)
@@ -213,7 +213,7 @@ fun <T> render(vl: VerticalLayout<T>): T? {
         .firstOrNull{ it != null }
 }
 
-fun <T> render(b: Button<T>): T? {
+fun <Mes> render(b: Button<Mes>): Mes? {
     if (ImGui.button(b.text) and (b.onClick != null)) {
         return b.onClick
     } else {
@@ -226,7 +226,7 @@ fun render(l: Label): AlwaysNull {
     return null
 }
 
-fun <T> render(tf: TextField<T>): T? {
+fun <Mes> render(tf: TextField<Mes>): Mes? {
     val inputBuf = tf.text.toCharArray(CharArray(64))
     if (ImGui.inputText(tf.label, inputBuf) and (tf.onInput != null)) {
         return tf.onInput!!(inputBuf.takeWhile { it != NUL }.joinToString(""))
