@@ -13,6 +13,7 @@ import imgui.ImGui
 import imgui.NUL
 import imgui.WindowFlag as Wf
 import imgui.dsl
+import imgui.glyphRanges
 import imgui.imgui.Context
 import imgui.impl.ImplGL3
 import imgui.impl.ImplGlfw
@@ -41,6 +42,8 @@ val imguiWindowFlags = Wf.NoTitleBar.i or Wf.NoCollapse.i or Wf.NoMove.i or Wf.N
 val DEBUG = true
 
 val guiScale = 1.5f
+
+val glyphs = glyphRanges.cyrillic
 
 fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) -> Mdl) {
     glfw {
@@ -90,7 +93,7 @@ fun <Mdl, Ms> run(initialModel: Mdl, view: (Mdl) -> View<Ms>, update: (Ms, Mdl) 
     ImGui.style.scaleAllSizes(guiScale)
 
     // Load Fonts
-    ImGui.io.fonts.addFontFromFileTTF("extraFonts/DroidSans.ttf", 18.0f * guiScale)
+    ImGui.io.fonts.addFontFromFileTTF("extraFonts/DroidSans.ttf", 18.0f * guiScale, glyphRanges = glyphs)
 
     var model = initialModel
     
