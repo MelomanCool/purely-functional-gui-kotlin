@@ -25,6 +25,10 @@ data class SetTodoStatus(val id: Int, val isDone: Boolean): Msg()
 
 fun view(model: Model): View<Msg> =
     VerticalLayout(
+        HorizontalLayout(
+            TextField(label = "", text = model.newTodoText, onInput = ::SetNewTodoText),
+            Button(text = "Add Todo", onClick = AddNewTodo)
+        ),
         *model.todos
             .mapIndexed { i, it -> HorizontalLayout(
                 Checkbox(
@@ -34,11 +38,7 @@ fun view(model: Model): View<Msg> =
                 ),
                 Button(text = "X", onClick = DeleteTodo(id = i))
             )}
-            .toTypedArray(),
-        HorizontalLayout(
-            TextField(label = "", text = model.newTodoText, onInput = ::SetNewTodoText),
-            Button(text = "Add Todo", onClick = AddNewTodo)
-        )
+            .toTypedArray()
     )
 
 fun update(msg: Msg, model: Model): Model =
@@ -49,7 +49,7 @@ fun update(msg: Msg, model: Model): Model =
             if (model.newTodoText.isNotBlank()) {
                 Model(
                     newTodoText = "",
-                    todos = model.todos.plus(Todo(text = model.newTodoText, isDone = false))
+                    todos = model.todos.plus(0, Todo(text = model.newTodoText, isDone = false))
                 )
             } else {
                 model
