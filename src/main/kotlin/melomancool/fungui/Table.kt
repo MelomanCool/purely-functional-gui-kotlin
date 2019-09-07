@@ -21,6 +21,8 @@ data class PMatrix<E>(val cells: PVector<PVector<E>>) {
         this.cells[y][x]
 }
 
+fun <E> pvectorOf(vararg els: E): PVector<E> = TreePVector.from(els.toList())
+
 sealed class Msg
 data class SetCellText(val x: Int, val y: Int, val text: String): Msg()
 
@@ -46,10 +48,10 @@ fun update(msg: Msg, model: Model): Model =
 
 fun main() {
     run(
-        initialModel = Model(PMatrix<String>(TreePVector.from(listOf(
-            TreePVector.from(listOf(   "top-left",    "top-right")),
-            TreePVector.from(listOf("bottom-left", "bottom-right"))
-        )))),
+        initialModel = Model(PMatrix(pvectorOf(
+            pvectorOf(   "top-left",    "top-right"),
+            pvectorOf("bottom-left", "bottom-right")
+        ))),
         view = ::view,
         update = ::update
     )
