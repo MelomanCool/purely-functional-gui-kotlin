@@ -28,3 +28,5 @@ data class Checkbox<Mes>(
     val isChecked: Boolean,
     val onClick: ((Boolean) -> Mes)? = null
 ): View<Mes>()
+
+data class GridLayout<Mes>(val children: List<List<View<Mes>>>): View<Mes>()

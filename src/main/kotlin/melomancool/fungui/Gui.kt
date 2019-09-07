@@ -173,6 +173,7 @@ fun <Mes> renderGeneric(v: View<Mes>): Mes? {
         is Label -> render(v)
         is TextField -> render(v)
         is Checkbox -> render(v)
+        is GridLayout -> render(v)
     }
 }
 
@@ -234,5 +235,31 @@ fun <Mes> render(cb: Checkbox<Mes>): Mes? {
         return cb.onClick!!(inputBuf[0])
     } else {
         return null
+    }
+}
+
+fun <Mes> render(gl: GridLayout<Mes>): Mes? {
+    return if (gl.children.isNotEmpty()) {
+        ImGui.columns(gl.children.firstOrNull()!!.size)
+        val res1 = gl.children
+            .mapIndexed { y, row ->
+                ImGui.pushId(y)
+                val res2 = row
+                    .mapIndexed { x, it ->
+                        ImGui.pushId(x)
+                        val res3 = renderGeneric(it)
+                        ImGui.nextColumn()
+                        ImGui.popId()
+                        res3
+                    }
+                    .firstOrNull{ it != null }
+                ImGui.popId()
+                res2
+            }
+            .firstOrNull{ it != null }
+        ImGui.columns(1)
+        res1
+    } else {
+        null
     }
 }
