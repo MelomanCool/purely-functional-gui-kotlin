@@ -1,7 +1,7 @@
 package melomancool.fungui.table
 
-import org.pcollections.PVector
-import org.pcollections.TreePVector
+import melomancool.fungui.utils.PMatrix
+import melomancool.fungui.utils.pvectorOf
 
 import melomancool.fungui.GridLayout
 import melomancool.fungui.TextField
@@ -12,16 +12,6 @@ import melomancool.fungui.FullWidth
 import melomancool.fungui.run
 
 data class Model(val cells: PMatrix<String>)
-
-data class PMatrix<E>(val cells: PVector<PVector<E>>) {
-    fun with(x: Int, y: Int, e: E): PMatrix<E> =
-        this.copy(cells = this.cells.with(y, this.cells[y].with(x, e)))
-
-    fun get(x: Int, y: Int): E =
-        this.cells[y][x]
-}
-
-fun <E> pvectorOf(vararg els: E): PVector<E> = TreePVector.from(els.toList())
 
 sealed class Msg
 data class SetCellText(val x: Int, val y: Int, val text: String): Msg()
