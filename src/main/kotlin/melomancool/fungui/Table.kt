@@ -25,28 +25,16 @@ sealed class Msg
 data class SetCellText(val x: Int, val y: Int, val text: String): Msg()
 
 fun view(model: Model): View<Msg> =
-    GridLayout(listOf(
-        listOf(
-            WithAttrs(
-                TextField(label = "", text = model.cells.get(0, 0), onInput = { SetCellText(0, 0, it) }),
-                listOf(FullWidth)
-            ),
-            WithAttrs(
-                TextField(label = "", text = model.cells.get(1, 0), onInput = { SetCellText(1, 0, it) }),
-                listOf(FullWidth)
-            )
-        ),
-        listOf(
-            WithAttrs(
-                TextField(label = "", text = model.cells.get(0, 1), onInput = { SetCellText(0, 1, it) }),
-                listOf(FullWidth)
-            ),
-            WithAttrs(
-                TextField(label = "", text = model.cells.get(1, 1), onInput = { SetCellText(1, 1, it) }),
-                listOf(FullWidth)
-            )
-        )
-    ))
+    GridLayout(
+        model.cells.cells.mapIndexed { y, row ->
+            row.mapIndexed { x, text ->
+                WithAttrs(
+                    TextField(label = "", text = text, onInput = { SetCellText(x, y, it) }),
+                    listOf(FullWidth)
+                )
+            }
+        }
+    )
 
 fun update(msg: Msg, model: Model): Model =
     when (msg) {
