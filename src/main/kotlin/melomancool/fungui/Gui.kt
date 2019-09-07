@@ -174,6 +174,7 @@ fun <Mes> renderGeneric(v: View<Mes>): Mes? {
         is TextField -> render(v)
         is Checkbox -> render(v)
         is GridLayout -> render(v)
+        is WithAttrs -> render(v)
     }
 }
 
@@ -261,5 +262,17 @@ fun <Mes> render(gl: GridLayout<Mes>): Mes? {
         res1
     } else {
         null
+    }
+}
+
+fun <Mes> render(wa: WithAttrs<Mes>): Mes? {
+    return if (wa.attrs.isEmpty()) {
+        renderGeneric(wa.element)
+    } else {
+        when (wa.attrs[0]) {
+            FullWidth ->
+                ImGui.setNextItemWidth(-1f)
+        }
+        render(wa.copy(attrs = wa.attrs.drop(1)))
     }
 }

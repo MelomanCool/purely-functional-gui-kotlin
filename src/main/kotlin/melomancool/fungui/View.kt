@@ -34,3 +34,10 @@ data class Checkbox<Mes>(
 ): Element<Mes>()
 
 data class GridLayout<Mes>(val children: List<List<View<Mes>>>): Layout<Mes>()
+
+data class WithAttrs<Mes>(val element: Element<Mes>, val attrs: List<Attr>): Element<Mes>()
+
+
+sealed class Attr
+
+object FullWidth: Attr()
