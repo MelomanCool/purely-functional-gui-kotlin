@@ -240,7 +240,7 @@ fun <Mes> render(cb: Checkbox<Mes>): Mes? {
 
 fun <Mes> render(gl: GridLayout<Mes>): Mes? {
     return if (gl.children.isNotEmpty()) {
-        ImGui.columns(gl.children.firstOrNull()!!.size)
+        ImGui.columns(gl.children.firstOrNull()!!.size, border = false)
         val res1 = gl.children
             .mapIndexed { y, row ->
                 ImGui.pushId(y)
