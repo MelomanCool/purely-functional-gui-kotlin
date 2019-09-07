@@ -17,7 +17,7 @@ project.ext {
             break
     }
 
-    imguiVersion = '4d50561e42'
+    imguiVersion = '921da3e2e4'
 
     mainClass = "melomancool.fungui.todomvc.TodoMvcKt"
 }
@@ -35,9 +35,6 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -75,6 +72,6 @@ mainClassName = mainClass
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }

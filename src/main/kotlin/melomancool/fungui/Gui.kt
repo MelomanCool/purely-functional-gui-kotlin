@@ -15,9 +15,9 @@ import imgui.WindowFlag as Wf
 import imgui.dsl
 import imgui.glyphRanges
 import imgui.imgui.Context
-import imgui.impl.ImplGL3
-import imgui.impl.ImplGlfw
-import imgui.impl.glslVersion
+import imgui.impl.gl.ImplGL3
+import imgui.impl.gl.glslVersion
+import imgui.impl.glfw.ImplGlfw
 
 import org.lwjgl.glfw.GLFW.glfwPollEvents
 import org.lwjgl.glfw.GLFW.glfwSwapBuffers
